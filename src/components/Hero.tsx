@@ -39,11 +39,11 @@ const Hero = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold">
-              Стать партнёром
+              <a href="#contacts">Стать партнёром</a>
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="border-white text-teal-600 hover:bg-gray-100 hover:text-teal-600 px-8 py-4 text-lg">
-              Узнать больше
+              <a href="https://coralworld.eu/">Узнать больше</a>
             </Button>
           </div>
 

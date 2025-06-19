@@ -36,7 +36,7 @@ const Header = () => {
               </div>
             </div>
             <Button className="bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600">
-              Стать партнёром
+              <a href="#contacts">Стать партнёром</a>
             </Button>
           </div>
         </div>
