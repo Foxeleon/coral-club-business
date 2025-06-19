@@ -8,15 +8,20 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">C</span>
+            <div
+                className="w-14 h-14 bg-gradient-to-br from-white to-cyan-200 rounded-lg flex items-center justify-center">
+              <img
+                  src="/coral_world.svg"
+                  alt="Coral Club Logo"
+                  className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-800">CORAL CLUB</h1>
               <p className="text-xs text-gray-600">Философия здоровой жизни</p>
             </div>
           </div>
-          
+
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#about" className="text-gray-700 hover:text-teal-600 transition-colors">О компании</a>
             <a href="#products" className="text-gray-700 hover:text-teal-600 transition-colors">Продукция</a>
