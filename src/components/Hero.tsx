@@ -27,7 +27,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Стройте бизнес с
-            <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-green-600 to-orange-300 bg-clip-text text-transparent">
               CORAL CLUB
             </span>
           </h1>
@@ -42,7 +42,7 @@ const Hero = () => {
               Стать партнёром
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-teal-600 px-8 py-4 text-lg">
+            <Button size="lg" variant="outline" className="border-white text-teal-600 hover:bg-gray-100 hover:text-teal-600 px-8 py-4 text-lg">
               Узнать больше
             </Button>
           </div>
