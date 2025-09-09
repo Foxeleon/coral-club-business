@@ -1,33 +1,33 @@
 {
   "version": "48.0.0",
   "files": {
-    "06d9b33e84ecfa1dc2acee27be110c734a42934cf7fd349555721a8187db4c48": {
+    "965898f1272347b177f26318798e5a2c90d93339176ddc136e4d429290976cbe": {
       "displayName": "EmailHandler/Code",
       "source": {
-        "path": "asset.06d9b33e84ecfa1dc2acee27be110c734a42934cf7fd349555721a8187db4c48",
+        "path": "asset.965898f1272347b177f26318798e5a2c90d93339176ddc136e4d429290976cbe",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1-6a6d8506": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "06d9b33e84ecfa1dc2acee27be110c734a42934cf7fd349555721a8187db4c48.zip",
-          "region": "us-east-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        "555030775244-eu-central-1-9015f4c5": {
+          "bucketName": "cdk-hnb659fds-assets-555030775244-eu-central-1",
+          "objectKey": "965898f1272347b177f26318798e5a2c90d93339176ddc136e4d429290976cbe.zip",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::555030775244:role/cdk-hnb659fds-file-publishing-role-555030775244-eu-central-1"
         }
       }
     },
-    "b19a8d01a2a469f963d7d7929fbd425c373bd45fb4d5baa6008ed97d4df0e872": {
+    "9b1fdcee878f5cc33a8f42fda387ddbccc4073775f486aa6e575c856257d41b7": {
       "displayName": "CoralEmailStack Template",
       "source": {
         "path": "CoralEmailStack.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-0132ea1d": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "b19a8d01a2a469f963d7d7929fbd425c373bd45fb4d5baa6008ed97d4df0e872.json",
-          "region": "us-east-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        "555030775244-eu-central-1-b381dc43": {
+          "bucketName": "cdk-hnb659fds-assets-555030775244-eu-central-1",
+          "objectKey": "9b1fdcee878f5cc33a8f42fda387ddbccc4073775f486aa6e575c856257d41b7.json",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::555030775244:role/cdk-hnb659fds-file-publishing-role-555030775244-eu-central-1"
         }
       }
     }

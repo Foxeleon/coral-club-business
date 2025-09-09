@@ -11,21 +11,21 @@
     },
     "CoralEmailStack": {
       "type": "aws:cloudformation:stack",
-      "environment": "aws://unknown-account/us-east-1",
+      "environment": "aws://555030775244/eu-central-1",
       "properties": {
         "templateFile": "CoralEmailStack.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/b19a8d01a2a469f963d7d7929fbd425c373bd45fb4d5baa6008ed97d4df0e872.json",
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::555030775244:role/cdk-hnb659fds-deploy-role-555030775244-eu-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::555030775244:role/cdk-hnb659fds-cfn-exec-role-555030775244-eu-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-555030775244-eu-central-1/9b1fdcee878f5cc33a8f42fda387ddbccc4073775f486aa6e575c856257d41b7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
           "CoralEmailStack.assets"
         ],
         "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-us-east-1",
+          "arn": "arn:${AWS::Partition}:iam::555030775244:role/cdk-hnb659fds-lookup-role-555030775244-eu-central-1",
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         }
@@ -34,6 +34,48 @@
         "CoralEmailStack.assets"
       ],
       "metadata": {
+        "/CoralEmailStack": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "Be aware that the NodeJS runtime of Node 16 will be deprecated by Lambda on June 12, 2024. Lambda runtimes Node 18 and higher include SDKv3 and not SDKv2. Updating your Lambda runtime will require bundling the SDK, or updating all SDK calls in your handler code to use SDKv3 (which is not a trivial update). Please account for this added complexity and update as soon as possible. [ack: aws-cdk-lib/aws-lambda-nodejs:runtimeUpdateSdkV2Breakage]",
+            "trace": [
+              "Annotations.addMessage (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1978)",
+              "Annotations.addWarningV2 (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:896)",
+              "new Bundling (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\bundling.js:1:3070)",
+              "Function.bundle (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\bundling.js:1:1135)",
+              "new NodejsFunction (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\aws-cdk-lib\\aws-lambda-nodejs\\lib\\function.js:1:2352)",
+              "new EmailStack (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\lib\\email-stack.ts:21:31)",
+              "Object.<anonymous> (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\bin\\app.ts:8:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1688:14)",
+              "Module.m._compile (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+              "node:internal/modules/cjs/loader:1820:10",
+              "Object.require.extensions.<computed> [as .ts] (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1423:32)",
+              "Function._load (node:internal/modules/cjs/loader:1246:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "phase4 (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+              "bootstrap (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+              "main (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+              "Object.<anonymous> (D:\\WebstormProjects\\coral-club-rise-up\\aws\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1688:14)",
+              "Object.<anonymous> (node:internal/modules/cjs/loader:1820:10)",
+              "Module.load (node:internal/modules/cjs/loader:1423:32)",
+              "Function._load (node:internal/modules/cjs/loader:1246:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "node:internal/main/run_main_module:36:49"
+            ]
+          }
+        ],
+        "/CoralEmailStack/EmailFunctionLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmailFunctionLogs9F0F5F41"
+          }
+        ],
         "/CoralEmailStack/EmailHandler/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -80,6 +122,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "EmailApiPOSTcontactB9D2C7E9"
+          }
+        ],
+        "/CoralEmailStack/EmailApiAccessLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmailApiAccessLogsB49BC222"
+          }
+        ],
+        "/CoralEmailStack/ProdStage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProdStage6F7F36FB"
           }
         ],
         "/CoralEmailStack/ApiUrl": [
@@ -137,6 +191,10 @@
             "unconfiguredBehavesLike": {
               "v2": true
             }
+          },
+          "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "recommendedValue": true,
+            "explanation": "Disable implicit openListener when custom security groups are provided"
           },
           "@aws-cdk/aws-rds:lowercaseDbIdentifier": {
             "recommendedValue": true,
@@ -527,5 +585,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1027.0"
+  "minimumCliVersion": "2.1029.0"
 }

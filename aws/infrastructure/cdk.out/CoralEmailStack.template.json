@@ -1,5 +1,16 @@
 {
  "Resources": {
+  "EmailFunctionLogs9F0F5F41": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CoralEmailStack/EmailFunctionLogs/Resource"
+   }
+  },
   "EmailHandlerServiceRole5532AF63": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -27,6 +38,18 @@
         ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
        ]
       ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+       ]
+      ]
      }
     ]
    },
@@ -42,7 +65,9 @@
       {
        "Action": [
         "ses:SendEmail",
-        "ses:SendRawEmail"
+        "ses:SendRawEmail",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -64,26 +89,40 @@
   "EmailHandler7CB4CA8F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
-     },
-     "S3Key": "06d9b33e84ecfa1dc2acee27be110c734a42934cf7fd349555721a8187db4c48.zip"
+     "S3Bucket": "cdk-hnb659fds-assets-555030775244-eu-central-1",
+     "S3Key": "965898f1272347b177f26318798e5a2c90d93339176ddc136e4d429290976cbe.zip"
     },
     "Environment": {
      "Variables": {
-      "NODE_OPTIONS": "--enable-source-maps"
+      "NODE_OPTIONS": "--enable-source-maps",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
      }
     },
     "Handler": "index.handler",
+    "Layers": [
+     "arn:aws:lambda:eu-central-1:580247275435:layer:LambdaInsightsExtension-Arm64:22"
+    ],
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "EmailFunctionLogs9F0F5F41"
+     }
+    },
+    "MemorySize": 256,
     "Role": {
      "Fn::GetAtt": [
       "EmailHandlerServiceRole5532AF63",
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
-    "Timeout": 10
+    "Runtime": "nodejs16.x",
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
    },
    "DependsOn": [
     "EmailHandlerServiceRoleDefaultPolicy897B1A65",
@@ -91,7 +130,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "CoralEmailStack/EmailHandler/Resource",
-    "aws:asset:path": "asset.06d9b33e84ecfa1dc2acee27be110c734a42934cf7fd349555721a8187db4c48",
+    "aws:asset:path": "asset.965898f1272347b177f26318798e5a2c90d93339176ddc136e4d429290976cbe",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -174,11 +213,7 @@
        {
         "Ref": "AWS::Partition"
        },
-       ":execute-api:us-east-1:",
-       {
-        "Ref": "AWS::AccountId"
-       },
-       ":",
+       ":execute-api:eu-central-1:555030775244:",
        {
         "Ref": "EmailApi51CACE34"
        },
@@ -215,10 +250,43 @@
     "aws:cdk:path": "CoralEmailStack/EmailApi/POST--contact/Resource"
    }
   },
+  "EmailApiAccessLogsB49BC222": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CoralEmailStack/EmailApiAccessLogs/Resource"
+   }
+  },
+  "ProdStage6F7F36FB": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "AccessLogSettings": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "EmailApiAccessLogsB49BC222",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"sourceIp\":\"$context.identity.sourceIp\",\"method\":\"$context.httpMethod\",\"userContext\":{\"sub\":\"$context.authorizer.claims.sub\",\"email\":\"$context.authorizer.claims.email\"}}"
+    },
+    "ApiId": {
+     "Ref": "EmailApi51CACE34"
+    },
+    "AutoDeploy": true,
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CoralEmailStack/ProdStage/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12PzWrDQAyEnyX3tZrYl1yTQGkvbXEewChrxcg/u8bSxgTjdw+7pj309M2I0SDlkB8K2O9wlszWXdbzDZarou0MzlItPQ63Givna2oFvhLeg7PK3hnGAZbS92Qud5f443u2z2g3tRopKhQhFThFGCngHGxHekYhs9XDcrm7v9a4TNPAIuzdanDkBpVmfD5yWD5Ux9PIMRQR7VWxSRdsIo5KH3RTn06pmfC3+J9NuXU1JYkPkyWTbow97JoY+A46Bl1N/B9aeXvkORyOsN+1wpxNwSkPBOXGF0N3HadMAQAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12PzW7CMBCEn4W7s4XQQ6+AVFqpaqvwANHiGGvzY0fZNQhZfvfKSemhp29mNTvaLaHcPMN6hTcudNMVPZ0hngR1p/DGdey9ZYgf3h4nH0Z1uLiHTqrH4dxg7XxjWobPGa/BaSHvFOEAsfK9yTszv31P+p7topLibY3MRhh2GYq3sA+6M7JHNr/1EA8X99eal800EDN5lxSOZFHMDe/XEuKbyLgbKYcysj0J2vmCReRR5YMs6t2JsRM+iv/ZOZeSqgz7MGmj5htzDzmbA19BxiBJ5f+h5adrWcLmBdarlomKKTihwUC18Ac+A4ygaAEAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "CoralEmailStack/CDKMetadata/Default"
@@ -236,7 +304,7 @@
       {
        "Ref": "EmailApi51CACE34"
       },
-      ".execute-api.us-east-1.",
+      ".execute-api.eu-central-1.",
       {
        "Ref": "AWS::URLSuffix"
       },
