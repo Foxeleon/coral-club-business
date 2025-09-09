@@ -2,13 +2,12 @@ import { Stack, StackProps, CfnOutput, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
-// TODO импортируй из aws-apigatewayv2 только необходимое, а не всё
 import * as apigateway from 'aws-cdk-lib/aws-apigatewayv2';
 import * as integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as path from 'path';
 import * as logs from 'aws-cdk-lib/aws-logs';
-import { AccessLogFormat } from 'aws-cdk-lib/aws-apigateway/lib/access-log';
+import { AccessLogFormat } from "aws-cdk-lib/aws-apigateway";
 
 export class EmailStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -24,13 +23,13 @@ export class EmailStack extends Stack {
             'EmailHandler',
             {
                 entry: path.join(__dirname, '../../lambda/email-handler/index.ts'),
-                runtime: lambda.Runtime.NODEJS_18_X,
+                runtime: lambda.Runtime.NODEJS_16_X,
                 architecture: lambda.Architecture.ARM_64,
                 handler: 'handler',
                 memorySize: 256,
                 timeout: Duration.seconds(10),
                 tracing: lambda.Tracing.ACTIVE,
-                insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_178_0,
+                insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_391_0,
                 logGroup: emailFunctionLogGroup,
                 environment: { NODE_OPTIONS: '--enable-source-maps' },
                 bundling: {
@@ -63,7 +62,7 @@ export class EmailStack extends Stack {
         const httpApi = new apigateway.HttpApi(this, 'EmailApi', {
             description: 'Coral Club Contact Form API',
             corsPreflight: {
-                allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:3000'],
+                allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080'],
                 allowMethods: [
                     apigateway.CorsHttpMethod.GET,
                     apigateway.CorsHttpMethod.POST,
@@ -83,18 +82,16 @@ export class EmailStack extends Stack {
             autoDeploy: true,
             accessLogSettings: {
                 destination: new apigateway.LogGroupLogDestination(apiLogGroup),
-                format: AccessLogFormat.jsonWithStandardFields({
-                    ip: true,
-                    httpMethod: true,
-                    protocol: true,
-                    requestTime: true,
-                    resourcePath: true,
-                    status: true,
-                    responseLength: true,
-                    caller: true,
-                    user: true,
-                }),
-            },
+                format: AccessLogFormat.custom(JSON.stringify({
+                    requestId: "$context.requestId",
+                    sourceIp: "$context.identity.sourceIp",
+                    method: "$context.httpMethod",
+                    userContext: {
+                        sub: "$context.authorizer.claims.sub",
+                        email: "$context.authorizer.claims.email"
+                    }
+                }))
+            }
         });
 
         // Маршрут POST /contact
