@@ -10,7 +10,6 @@
     "cdk": "cdk",
     "bootstrap": "npx cdk bootstrap --profile serverless-coral-club-business",
     "deploy": "npx cdk deploy --profile serverless-coral-club-business",
-    "deploy:prod": "npx cdk deploy --profile production-profile-name",
     "synth": "npx cdk synth",
     "destroy": "npx cdk destroy --profile serverless-coral-club-business"
   },

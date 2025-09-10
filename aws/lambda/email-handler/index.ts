@@ -1,7 +1,6 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2';
 
-// ИСПРАВЛЕНО: Создаем экземпляр SESv2Client
 const sesClient = new SESv2Client({ region: 'eu-central-1' });
 
 export const handler = async (
@@ -15,7 +14,7 @@ export const handler = async (
     };
 
     if (event.requestContext.http.method === 'OPTIONS') {
-        return { statusCode: 204, headers }; // Используем 204 No Content для OPTIONS
+        return { statusCode: 204, headers }; // 204 No Content для OPTIONS
     }
 
     try {
@@ -66,7 +65,7 @@ export const handler = async (
             </body>
         </html>`;
 
-        const textBody = `🌊 Новая заявка Business Coral Club\n\n👤 Имя: ${name}\n📧 Email: ${email}\n${phone ? `📱 Телефон: ${phone}\n` : ''}💬 Сообще-ние: ${message}\n\n📅 Отправлено: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Berlin' })}`;
+        const textBody = `🌊 Новая заявка Business Coral Club\n\n👤 Имя: ${name}\n📧 Email: ${email}\n${phone ? `📱 Телефон: ${phone}\n` : ''}💬 Сообщение: ${message}\n\n📅 Отправлено: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Berlin' })}`;
 
         const command = new SendEmailCommand({
             FromEmailAddress: 'info.coralworld@gmail.com',

@@ -17,7 +17,6 @@ export class EmailStack extends Stack {
             retention: logs.RetentionDays.ONE_WEEK,
         });
 
-        // TypeScript Lambda функция
         const emailFunction = new lambdaNodejs.NodejsFunction(
             this,
             'EmailHandler',
@@ -59,7 +58,7 @@ export class EmailStack extends Stack {
         }));
 
         // HTTP API Gateway
-        const httpApi = new apigateway.HttpApi(this, 'EmailApi-v3', { // 🔄 Обновляем версию для чистоты
+        const httpApi = new apigateway.HttpApi(this, 'EmailApi-v3', {
             description: 'Coral Club Contact Form API (CDK v3)',
             corsPreflight: {
                 allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080'],
@@ -95,7 +94,6 @@ export class EmailStack extends Stack {
             }
         });
 
-        // Маршрут POST /contact
         httpApi.addRoutes({
             path: '/contact',
             methods: [apigateway.HttpMethod.POST],
@@ -106,7 +104,7 @@ export class EmailStack extends Stack {
         });
 
         // Выводим API URL
-        new CfnOutput(this, 'CoralBusinessEmailApiUrl-v3', { // 🔄 Обновляем версию
+        new CfnOutput(this, 'CoralBusinessEmailApiUrl-v3', {
             value: httpApi.url!,
             description: 'Contact Form API Gateway URL (CDK v3)',
             exportName: 'CoralBusinessEmailApiUrl',
