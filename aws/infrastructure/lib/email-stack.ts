@@ -59,7 +59,7 @@ export class EmailStack extends Stack {
         }));
 
         // HTTP API Gateway
-        const httpApi = new apigateway.HttpApi(this, 'EmailApi', {
+        const httpApi = new apigateway.HttpApi(this, 'EmailApi-v2', {
             description: 'Coral Club Contact Form API',
             corsPreflight: {
                 allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080'],
@@ -105,10 +105,10 @@ export class EmailStack extends Stack {
         });
 
         // Выводим API URL
-        new CfnOutput(this, 'ApiUrl', {
+        new CfnOutput(this, 'CoralBusinessEmailApiUrl-v2', {
             value: httpApi.url!,
             description: 'Contact Form API Gateway URL',
-            exportName: 'CoralEmailApiUrl',
+            exportName: 'CoralBusinessEmailApiUrl',
         });
     }
 }

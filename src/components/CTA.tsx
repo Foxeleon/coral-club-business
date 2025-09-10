@@ -47,7 +47,9 @@ const CTA = () => {
         message: `Новая заявка на консультацию с сайта. Имя: ${formData.name}, Телефон: ${formData.phone}`
       };
 
-      const response = await fetch('https://c69k8tghtf.execute-api.eu-central-1.amazonaws.com/contact', {
+      const apiUrl = import.meta.env.VITE_PUBLIC_API_URL;
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         // Ключевой заголовок для корректной обработки кириллицы
         headers: {
