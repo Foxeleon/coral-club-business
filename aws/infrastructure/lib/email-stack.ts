@@ -17,13 +17,12 @@ export class EmailStack extends Stack {
             retention: logs.RetentionDays.ONE_WEEK,
         });
 
-        // TypeScript Lambda функция
         const emailFunction = new lambdaNodejs.NodejsFunction(
             this,
             'EmailHandler',
             {
                 entry: path.join(__dirname, '../../lambda/email-handler/index.ts'),
-                runtime: lambda.Runtime.NODEJS_16_X,
+                runtime: lambda.Runtime.NODEJS_20_X,
                 architecture: lambda.Architecture.ARM_64,
                 handler: 'handler',
                 memorySize: 256,
@@ -35,8 +34,8 @@ export class EmailStack extends Stack {
                 bundling: {
                     minify: true,
                     sourceMap: true,
-                    target: 'es2020',
-                    externalModules: ['aws-sdk'],
+                    target: 'es2022',
+                    externalModules: ['@aws-sdk/client-ses'],
                 },
             },
         );
@@ -59,8 +58,8 @@ export class EmailStack extends Stack {
         }));
 
         // HTTP API Gateway
-        const httpApi = new apigateway.HttpApi(this, 'EmailApi-v2', {
-            description: 'Coral Club Contact Form API',
+        const httpApi = new apigateway.HttpApi(this, 'EmailApi-v3', {
+            description: 'Coral Club Contact Form API (CDK v3)',
             corsPreflight: {
                 allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080'],
                 allowMethods: [
@@ -76,6 +75,7 @@ export class EmailStack extends Stack {
         const apiLogGroup = new logs.LogGroup(this, 'EmailApiAccessLogs', {
             retention: logs.RetentionDays.ONE_WEEK,
         });
+
         new apigateway.HttpStage(this, 'ProdStage', {
             httpApi,
             stageName: 'prod',
@@ -94,7 +94,6 @@ export class EmailStack extends Stack {
             }
         });
 
-        // Маршрут POST /contact
         httpApi.addRoutes({
             path: '/contact',
             methods: [apigateway.HttpMethod.POST],
@@ -105,9 +104,9 @@ export class EmailStack extends Stack {
         });
 
         // Выводим API URL
-        new CfnOutput(this, 'CoralBusinessEmailApiUrl-v2', {
+        new CfnOutput(this, 'CoralBusinessEmailApiUrl-v3', {
             value: httpApi.url!,
-            description: 'Contact Form API Gateway URL',
+            description: 'Contact Form API Gateway URL (CDK v3)',
             exportName: 'CoralBusinessEmailApiUrl',
         });
     }
