@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Phone, Mail, MapPin, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
 const CTA = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    message: '',
   });
   const [status, setStatus] = useState<{
     isSubmitting: boolean;
@@ -20,7 +22,7 @@ const CTA = () => {
     message: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -44,7 +46,7 @@ const CTA = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        message: `Новая заявка на консультацию с сайта. Имя: ${formData.name}, Телефон: ${formData.phone}`
+        message: formData.message || ' ',
       };
 
       const apiUrl = import.meta.env.VITE_PUBLIC_API_URL;
@@ -65,7 +67,7 @@ const CTA = () => {
       }
 
       setStatus({ isSubmitting: false, type: 'success', message: 'Ваша заявка успешно отправлена!' });
-      setFormData({ name: '', email: '', phone: '' }); // Очистка формы
+      setFormData({ name: '', email: '', phone: '', message: '' });
 
       // Сброс статуса через 5 секунд
       setTimeout(() => setStatus({ isSubmitting: false, type: 'idle', message: '' }), 5000);
@@ -156,8 +158,19 @@ const CTA = () => {
                     />
                   </div>
 
-                  {/* --- НАЧАЛО: Блок для отображения статуса --- */}
-                  <div className="h-10">
+                  <div>
+                    <Textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Ваше сообщение (необязательно)"
+                        className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                        disabled={status.isSubmitting}
+                        rows={4}
+                    />
+                  </div>
+
+                  <div className="h-10" style={status.type === 'idle' ? { display: 'none' } : {}}>
                     {status.type === 'success' && (
                         <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-3 rounded-lg text-sm">
                           <CheckCircle className="w-5 h-5" />
@@ -171,7 +184,6 @@ const CTA = () => {
                         </div>
                     )}
                   </div>
-                  {/* --- КОНЕЦ: Блок статуса --- */}
 
                   <Button
                       type="submit"

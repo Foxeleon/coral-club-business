@@ -83,7 +83,7 @@ export const handler = async (
         });
 
         await sesClient.send(command);
-
+/*
         const clientHtmlBody = `<!DOCTYPE html>
             <html lang="ru">
             <head>
@@ -126,6 +126,7 @@ export const handler = async (
         });
 
         await sesClient.send(clientCommand);
+*/
 
         return {
             statusCode: 200,
