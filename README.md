@@ -15,12 +15,12 @@ Make sure you have Node.js and npm installed on your machine. We recommend using
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/Foxeleon/coral-club-rise-up.git
+   git clone https://github.com/Foxeleon/coral-club-business
    ```
 
 2. **Navigate to the project directory:**
    ```sh
-   cd coral-club-rise-up
+   cd coral-club-business
    ```
 
 3. **Install dependencies:**
@@ -97,7 +97,7 @@ There are several ways to contribute to this project:
 ## Project Structure
 
 ```
-coral-club-rise-up/
+coral-club-business
 ├── src/
 │   ├── components/     # React components
 │   ├── hooks/         # Custom React hooks
@@ -143,4 +143,4 @@ This project is open source and available under the [MIT License].
 
 ## Contact
 
-Project Link: [https://github.com/Foxeleon/coral-club-rise-up](https://github.com/Foxeleon/coral-club-rise-up)
+Project Link: [https://github.com/Foxeleon/coral-club-business](https://github.com/Foxeleon/coral-club-business)
