@@ -12,7 +12,7 @@ const Footer = () => {
                 <span className="text-white font-bold text-lg">C</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold">CORAL CLUB</h3>
+                <h3 className="text-xl font-bold">CORAL CLUB BUSINESS</h3>
                 <p className="text-sm text-gray-400">Философия здоровой жизни</p>
               </div>
             </div>

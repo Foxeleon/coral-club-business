@@ -17,7 +17,7 @@ const Header = () => {
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">CORAL CLUB</h1>
+              <h1 className="text-xl font-bold text-gray-800">CORAL CLUB BUSINESS</h1>
               <p className="text-xs text-gray-600">Философия здоровой жизни</p>
             </div>
           </div>

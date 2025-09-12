@@ -43,7 +43,7 @@ const Hero = () => {
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="border-white text-teal-600 hover:bg-gray-100 hover:text-teal-600 px-8 py-4 text-lg">
-              <a href="https://coralworld.eu/">Узнать больше</a>
+              <a href="https://coralworld.eu/" target="_blank">Узнать больше</a>
             </Button>
           </div>
 
