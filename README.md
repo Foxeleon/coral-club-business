@@ -1,4 +1,4 @@
-# Vite + React + TypeScript Coral Club Rise-up Project
+# Vite + React + TypeScript Coral Club Business Project
 
 A modern web application built with Vite, React, TypeScript, and styled with Tailwind CSS and shadcn/ui components.
 
