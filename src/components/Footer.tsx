@@ -35,10 +35,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Контакты</h4>
             <ul className="space-y-2 text-gray-400">
-              <li>+49 176 799 929 54</li>
-              <li>info.coralworld@gmail.com</li>
-              <li>Telegram: @coralworld_eu</li>
-              <li>WhatsApp доступен</li>
+              <li><a href="tel:+4917679292954">+49 176 792 929 54</a></li>
+              <li><a href="mailto:info.coralworld@gmail.com" target="_blank">info.coralworld@gmail.com</a></li>
+              <li>Telegram: <a href='https://t.me/+4917679292954' target="_blank">@CoralWorldInfo</a></li>
+              <li><a href="https://wa.me/+4917679292954" target="_blank">WhatsApp</a></li>
             </ul>
           </div>
         </div>

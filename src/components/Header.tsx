@@ -33,11 +33,11 @@ const Header = () => {
             <div className="hidden md:flex items-center space-x-3 text-sm text-gray-600">
               <div className="flex items-center space-x-1">
                 <Phone className="w-4 h-4" />
-                <span>+49 176 799 929 54</span>
+                <span><a href="tel:+4917679292954">+49 176 792 929 54</a></span>
               </div>
               <div className="flex items-center space-x-1">
                 <Mail className="w-4 h-4" />
-                <span>info.coralworld@gmail.com</span>
+                <span><a href="mailto:info.coralworld@gmail.com" target="_blank">info.coralworld@gmail.com</a></span>
               </div>
             </div>
             <Button className="bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600">
