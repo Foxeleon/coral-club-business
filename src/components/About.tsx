@@ -6,7 +6,7 @@ const About = () => {
   const achievements = [
     {
       icon: Award,
-      title: "20+ лет опыта",
+      title: "25+ лет опыта",
       description: "Более двух десятилетий успешной работы в сфере здоровья"
     },
     {

@@ -49,7 +49,7 @@ const Hero = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <h3 className="text-2xl font-bold mb-2">20+</h3>
+              <h3 className="text-2xl font-bold mb-2">25+</h3>
               <p className="text-teal-50">лет на рынке</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
