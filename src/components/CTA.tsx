@@ -207,15 +207,19 @@ const CTA = () => {
                   <div className="space-y-3 text-sm text-gray-600">
                     <div className="flex items-center space-x-2">
                       <Phone className="w-4 h-4 text-teal-500" />
-                      <span>+49 176 799 929 54</span>
+                      <span><a href="tel:+4917679292954">+49 176 792 929 54</a></span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Mail className="w-4 h-4 text-teal-500" />
-                      <span>info.coralworld@gmail.com</span>
+                      <span><a href="mailto:info.coralworld@gmail.com" target="_blank">info.coralworld@gmail.com</a></span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <MapPin className="w-4 h-4 text-teal-500" />
-                      <span>Telegram: @coralworld_eu</span>
+                      <span>Telegram: <a href='https://t.me/+4917679292954' target="_blank">@CoralWorldInfo</a></span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="w-4 h-4 text-teal-500" />
+                      <span>WhatsApp: <a href="https://wa.me/+4917679292954" target="_blank">WhatsApp</a></span>
                     </div>
                   </div>
                 </div>
