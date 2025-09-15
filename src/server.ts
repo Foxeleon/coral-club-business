@@ -18,12 +18,12 @@ const createServer = async () => {
     // Используем middleware от Vite для HMR
     app.use(vite.middlewares);
 
-    app.use('*', async (req: Request, res: Response, next: NextFunction) => {
+    app.use( async (req: Request, res: Response, next: NextFunction) => {
         const url = req.originalUrl;
 
         try {
             // 1. Читаем index.html как шаблон
-            let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+            let template = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf-8');
 
             // 2. Трансформируем HTML с помощью Vite
             template = await vite.transformIndexHtml(url, template);

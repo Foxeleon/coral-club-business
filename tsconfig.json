@@ -7,14 +7,14 @@
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "commonjs",
+    "module": "ESNext",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true, // Важно: Vite делает сборку, а не tsc
+    "noEmit": true,
     "jsx": "react-jsx",
 
     "baseUrl": ".",
@@ -31,6 +31,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src",
-    "src/server"
+    "src/server.ts"
   ]
 }

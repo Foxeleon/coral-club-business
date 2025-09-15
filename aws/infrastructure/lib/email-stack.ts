@@ -61,7 +61,7 @@ export class EmailStack extends Stack {
         const httpApi = new apigateway.HttpApi(this, 'EmailApi-v3', {
             description: 'Coral Club Contact Form API (CDK v3)',
             corsPreflight: {
-                allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080', 'https://main.d18yc0u9zjj1ei.amplifyapp.com/', 'https://business.coralworld.eu'],
+                allowOrigins: ['http://angular.coralworld.eu', 'http://localhost:8080', 'https://main.d18yc0u9zjj1ei.amplifyapp.com/', 'https://business.coralworld.eu', 'http://localhost:5173'],
                 allowMethods: [
                     apigateway.CorsHttpMethod.GET,
                     apigateway.CorsHttpMethod.POST,
