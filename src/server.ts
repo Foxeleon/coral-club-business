@@ -23,7 +23,6 @@ export default async function createServer(projectRoot: string = process.cwd()) 
         app.use(express.static(resolve('dist/client'), { index: false }));
     }
 
-    // ПРАВИЛЬНО: app.use без '*'
     app.use(async (req, res) => {
         try {
             const url = req.originalUrl;
