@@ -13,9 +13,8 @@ applications:
         files:
           - 'dist/**/*'
           - 'node_modules/**/*'
-          - 'server.production.js'
           - 'package.json'
     appRoot: src
     compute:
       commands:
-        - node server.production.js
+        - node dist/server/ssr-entry.js
