@@ -14,7 +14,7 @@ applications:
           - 'dist/**/*'
           - 'node_modules/**/*'
           - 'package.json'
-    appRoot: src
+          - 'package-lock.json'
     compute:
       commands:
         - node dist/server/ssr-entry.js
