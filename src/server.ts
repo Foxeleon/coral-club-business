@@ -1,56 +1,68 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import express, { Request, Response, NextFunction } from 'express';
-import { ViteDevServer } from 'vite';
+import express from 'express';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD;
 
-const createServer = async () => {
+async function createServer() {
     const app = express();
+    const resolve = (p: string) => path.resolve(__dirname, p);
 
-    // Создаем Vite-сервер в режиме middleware
-    const vite: ViteDevServer = await (await import('vite')).createServer({
-        server: { middlewareMode: true },
-        appType: 'custom'
-    });
+    let vite: any = null;
+    if (!isTest) {
+        vite = await (await import('vite')).createServer({
+            server: { middlewareMode: true },
+            appType: 'custom'
+        });
+        app.use(vite.middlewares);
+    } else {
+        app.use((await import('compression')).default());
+        app.use(
+            (await import('serve-static')).default(resolve('../client'), {
+                index: false
+            })
+        );
+    }
 
-    // Используем middleware от Vite для HMR
-    app.use(vite.middlewares);
-
-    app.use( async (req: Request, res: Response, next: NextFunction) => {
-        const url = req.originalUrl;
-
+    app.use(async (req, res) => {
         try {
-            // 1. Читаем index.html как шаблон
-            let template = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf-8');
+            const url = req.originalUrl;
+            const template = isTest
+                ? fs.readFileSync(resolve('../client/index.html'), 'utf-8')
+                : fs.readFileSync(resolve('../index.html'), 'utf-8');
 
-            // 2. Трансформируем HTML с помощью Vite
-            template = await vite.transformIndexHtml(url, template);
+            const transformedTemplate = isTest
+                ? template
+                : await vite.transformIndexHtml(url, template);
 
-            // 3. Загружаем серверную точку входа
-            const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
+            const render = isTest
+                ? (await import(resolve('../server/entry-server.js'))).render
+                : (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
 
-            // 4. Рендерим приложение
             const { html: appHtml } = await render(url);
+            const html = transformedTemplate.replace(`<!--ssr-outlet-->`, appHtml);
 
-            // 5. Вставляем HTML приложения в шаблон
-            const html = template.replace(`<!--ssr-outlet-->`, appHtml);
-
-            // 6. Отправляем финальный HTML
             res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-        } catch (e) {
-            if (e instanceof Error) {
-                vite.ssrFixStacktrace(e);
-            }
-            next(e);
+        } catch (e: any) {
+            !isTest && vite.ssrFixStacktrace(e);
+            console.log(e.stack);
+            res.status(500).end(e.stack);
         }
     });
 
-    const port = 5173;
-    app.listen(port, () => {
-        console.log(`SSR Server is running at http://localhost:${port}`);
-    });
-};
+    return { app };
+}
 
-createServer();
+// Запускаем сервер только если это не тестовая среда
+if (!isTest) {
+    createServer().then(({ app }) =>
+        app.listen(5173, () => {
+            console.log('http://localhost:5173');
+        })
+    );
+}
+
+// Экспортируем для использования в Amplify
+export default createServer;

@@ -1,0 +1,21 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: .
+        files:
+          - 'dist/**/*'
+          - 'node_modules/**/*'
+          - 'server.production.js'
+          - 'package.json'
+    appRoot: src
+    compute:
+      commands:
+        - node server.production.js
