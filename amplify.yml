@@ -16,7 +16,6 @@ applications:
           - 'server.production.js'
           - 'package.json'
           - 'package-lock.json'
-    appRoot: src
     compute:
       commands:
         - node server.production.js
