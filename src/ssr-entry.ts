@@ -2,23 +2,22 @@ import express from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-// @ts-expect-error: This is a virtual module provided by Vite
-import { render } from 'virtual:ssr-entry';
+import { render } from './entry-server.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, '..');
 
 const port = process.env.PORT || 8080;
 
 (async () => {
     const app = express();
 
-    app.use(express.static(path.resolve(__dirname, '../client'), { index: false }));
+    app.use(express.static(path.resolve(root, 'client'), { index: false }));
 
-    app.use('*', async (req, res) => {
+    app.use(async (req, res) => {
         try {
             const url = req.originalUrl;
-            const template = await fs.readFile(path.resolve(__dirname, '../client/index.html'), 'utf-8');
+            const template = await fs.readFile(path.resolve(root, 'client/index.html'), 'utf-8');
             const appHtml = render(url);
             const html = template.replace(`<!--ssr-outlet-->`, appHtml);
             res.status(200).set({ 'Content-Type': 'text/html' }).send(html);

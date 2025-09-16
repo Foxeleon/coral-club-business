@@ -9,12 +9,9 @@ applications:
           commands:
             - npm run build
       artifacts:
-        baseDirectory: .
+        baseDirectory: dist
         files:
-          - 'dist/**/*'
-          - 'node_modules/**/*'
-          - 'package.json'
-          - 'package-lock.json'
-    compute:
-      commands:
-        - node dist/server/ssr-entry.js
+          - '**/*'
+      compute:
+        commands:
+          - node server/ssr-entry.js
