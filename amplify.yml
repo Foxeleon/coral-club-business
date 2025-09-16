@@ -14,4 +14,4 @@ applications:
           - '**/*'
       compute:
         commands:
-          - node server/ssr-entry.js
+          - node dist/server/ssr-entry.js
