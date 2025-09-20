@@ -12,5 +12,9 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist'
-  }
+  },
+  preview: {
+    port: 8080,
+    strictPort: true,
+  },
 });

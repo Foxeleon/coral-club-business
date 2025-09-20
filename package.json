@@ -8,7 +8,7 @@
     "build": "vite build",
     "prerender": "tsx prerender.tsx",
     "generate-static": "npm run build && npm run prerender",
-    "preview": "vite preview --port 8080"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.0",
