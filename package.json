@@ -1,16 +1,14 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "coral-club-business",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --ssr src/ssr-entry.ts --outDir dist/server",
-    "build": "npm run build:client && npm run build:server",
-    "preview": "node dist/server/ssr-entry.js",
-    "serve": "node server/ssr-entry.js",
-    "lint": "eslint ."
+    "dev": "vite",
+    "build": "vite build",
+    "prerender": "tsx prerender.tsx",
+    "generate-static": "npm run build && npm run prerender",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.0",
@@ -55,6 +53,7 @@
     "react": "18.3.1",
     "react-day-picker": "8.10.1",
     "react-dom": "18.3.1",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "7.52.2",
     "react-resizable-panels": "2.0.22",
     "react-router-dom": "6.26.0",

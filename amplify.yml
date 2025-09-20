@@ -6,22 +6,11 @@ frontend:
         - npm ci
     build:
       commands:
-        - npm run build
-        - cp -r dist/server dist/client/
+        - npm run generate-static
   artifacts:
-    baseDirectory: dist/client
+    baseDirectory: dist
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
-  customHeaders:
-    - pattern: '/assets/*'
-      headers:
-        - key: 'Cache-Control'
-          value: 'public, max-age=31536000, immutable'
-customRules:
-  - source: /<*>
-    target: 'http://localhost:3000'
-    status: 200
-    condition: null
