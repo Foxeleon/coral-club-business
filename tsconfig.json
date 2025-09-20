@@ -30,7 +30,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src",
-    "src/server.ts"
+  "include": [
+    "src",
+    "prerender.tsx"
   ]
 }
