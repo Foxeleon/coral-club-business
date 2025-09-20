@@ -83,7 +83,7 @@ export const handler = async (
         });
 
         await sesClient.send(command);
-/*
+/*      Implement sending data to customer
         const clientHtmlBody = `<!DOCTYPE html>
             <html lang="ru">
             <head>
