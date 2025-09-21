@@ -33,14 +33,14 @@ const Header = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-800">CORAL CLUB BUSINESS</h1>
-                <p className="text-xs text-gray-600">{t('header_philosophy')}</p>
+                <p className="text-xs text-gray-600">{t('header.philosophy')}</p>
               </div>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#about" className="text-gray-700 hover:text-teal-600 transition-colors">{t('nav_about')}</a>
-              <a href="#products" className="text-gray-700 hover:text-teal-600 transition-colors">{t('nav_products')}</a>
-              <a href="#benefits" className="text-gray-700 hover:text-teal-600 transition-colors">{t('nav_partnership')}</a>
-              <a href="#contacts" className="text-gray-700 hover:text-teal-600 transition-colors">{t('nav_contacts')}</a>
+              <a href="#about" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_about')}</a>
+              <a href="#products" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_products')}</a>
+              <a href="#benefits" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_partnership')}</a>
+              <a href="#contacts" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_contacts')}</a>
             </nav>
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-3 text-sm text-gray-600">
@@ -70,7 +70,7 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button className="bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600">
-                <a href="#contacts">{t('cta_button')}</a>
+                <a href="#contacts">{t('header.cta_button')}</a>
               </Button>
             </div>
           </div>
