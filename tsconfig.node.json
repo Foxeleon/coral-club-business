@@ -24,6 +24,7 @@
   "include": [
     "vite.config.ts",
     "prerender.tsx",
-    "src/App.tsx"
+    "src/App.tsx",
+    "src/i18n.ts"
   ]
 }
