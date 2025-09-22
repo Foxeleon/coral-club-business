@@ -11,40 +11,39 @@ import i18n from './src/i18n';
 
 const { HelmetProvider } = HelmetAsync;
 
-// --- Configuration for SSG
 const languages = ['ru', 'en', 'de'];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function runPrerender() {
-    console.log('Starting pre-rendering process...');
-    const template = fs.readFileSync(path.resolve(__dirname, 'dist/index.html'), 'utf-8');
+    console.log('Starting simplified pre-rendering process...');
+
+    const templatePath = path.resolve(__dirname, 'dist/index.html');
+    if (!fs.existsSync(templatePath)) {
+        console.error("Error: dist/index.html not found. Did you run 'npm run build' first?");
+        return;
+    }
+    const template = fs.readFileSync(templatePath, 'utf-8');
 
     for (const lng of languages) {
-        const url = `/${lng}/`;
-        console.log(`Rendering language: ${lng} for url: ${url}`);
+        console.log(`Rendering language: ${lng}`);
+
         const translation = JSON.parse(
             fs.readFileSync(path.resolve(__dirname, `public/locales/${lng}/translation.json`), 'utf-8')
         );
 
-        // --- Initialize i18next for the current language IN-PROCESS
-        // This is crucial for SSG. I provide the resources directly.
+        // I initialize i18next with the specific language
         await i18n.init({
-            resources: {
-                [lng]: {
-                    translation,
-                },
-            },
+            resources: { [lng]: { translation } },
             lng,
             fallbackLng: lng,
         });
 
         const helmetContext: { helmet?: HelmetServerState } = {};
 
-        // --- Render the App component to an HTML string
-        // It's wrapped with all necessary providers for routing, i18n, and head management.
+        // React Router will handle the root path, and i18next already knows the language
         const appHtml = renderToString(
             <React.StrictMode>
-                <StaticRouter location={url}>
+                <StaticRouter location="/">
                     <I18nextProvider i18n={i18n}>
                         <HelmetProvider context={helmetContext}>
                             <App />
@@ -56,9 +55,8 @@ async function runPrerender() {
 
         const { helmet } = helmetContext;
 
-        // --- Inject the rendered HTML and head elements into the template
         const finalHtml = template
-            .replace(`<!--app-html-->`, appHtml) // Make sure your index.html has this placeholder
+            .replace(`<!--app-html-->`, appHtml)
             .replace(
                 '</head>',
                 `${helmet?.title?.toString() ?? ''}${helmet?.meta?.toString() ?? ''}${helmet?.link?.toString() ?? ''}</head>`
@@ -68,12 +66,11 @@ async function runPrerender() {
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
         }
-        const filePath = `${dirPath}/index.html`;
-        fs.writeFileSync(filePath, finalHtml);
-        console.log(`Successfully pre-rendered: ${filePath}`);
+        fs.writeFileSync(`${dirPath}/index.html`, finalHtml);
+        console.log(`Successfully pre-rendered: dist/${lng}/index.html`);
     }
 
-    // --- Optional: Create a root index.html for redirection
+    // Create the root redirect
     const rootIndexPath = path.resolve(__dirname, 'dist/index.html');
     const redirectScript = `
     <script>
@@ -82,9 +79,10 @@ async function runPrerender() {
       const langToRedirect = supportedLangs.includes(userLang) ? userLang : 'ru';
       window.location.replace('/' + langToRedirect + '/');
     </script>
-  `;
+    `;
     fs.writeFileSync(rootIndexPath, redirectScript);
     console.log('Created root redirect file.');
+    console.log('\nSSG process completed successfully!');
 }
 
 runPrerender().then(r => true);
