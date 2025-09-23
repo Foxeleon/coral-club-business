@@ -38,8 +38,9 @@ const Header = () => {
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#about" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_about')}</a>
-              <a href="#products" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_products')}</a>
               <a href="#benefits" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_partnership')}</a>
+              <a href="#products" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_products')}</a>
+              <a href="#testimonials" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_testimonials')}</a>
               <a href="#contacts" className="text-gray-700 hover:text-teal-600 transition-colors">{t('header.nav_contacts')}</a>
             </nav>
             <div className="flex items-center space-x-4">
@@ -53,6 +54,9 @@ const Header = () => {
                   <span><a href="mailto:info.coralworld@gmail.com" target="_blank">info.coralworld@gmail.com</a></span>
                 </div>
               </div>
+              <Button className="bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600">
+                <a href="#contacts">{t('header.cta_button')}</a>
+              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex items-center gap-2 w-24 justify-start">
@@ -69,9 +73,6 @@ const Header = () => {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button className="bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600">
-                <a href="#contacts">{t('header.cta_button')}</a>
-              </Button>
             </div>
           </div>
         </div>
