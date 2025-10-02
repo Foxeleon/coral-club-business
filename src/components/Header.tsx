@@ -6,6 +6,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Phone, Mail, Menu, UserPlus, } from "lucide-react";
 
 
+
+type headerLink = {
+  id: string;
+  href: string;
+  label: string;
+  className: string;
+  classNameMobile: string;
+}
+
 type LanguageConfig = {
   [key: string]: { name: string; flag: string };
 };
@@ -16,19 +25,12 @@ const languageConfig: LanguageConfig = {
   de: { name: "DE", flag: "de" },
 };
 
-type headerLink = {
-  id: string;
-  href: string;
-  label: string;
-  className: string;
-}
-
 const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    i18n.changeLanguage(lng).then(r => true);
   };
 
   return (
@@ -68,30 +70,22 @@ const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLin
   const { t } = useTranslation();
 
   const links: Array<headerLink> = [
-    { id: "about", href: "#about", label: t("header.nav_about"), className: "hidden lg:block", },
-    { id: "benefits", href: "#benefits", label: t("header.nav_partnership"), className: "hidden md:block", },
-    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "hidden md:block", },
-    { id: "products", href: "#products", label: t("header.nav_products"), className: "hidden lg:block", },
-    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "hidden xl:block", },
-  ];
-
-  const sideMenuLinks: Array<headerLink> = [
-    { id: "about", href: "#about", label: t("header.nav_about"), className: "block lg:hidden", },
-    { id: "benefits", href: "#benefits", label: t("header.nav_partnership"), className: "block md:hidden", },
-    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "block md:hidden", },
-    { id: "products", href: "#products", label: t("header.nav_products"), className: "block lg:hidden", },
-    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "block xl:hidden", },
+    { id: "about", href: "#about", label: t("header.nav_about"), className: "hidden lg:block", classNameMobile: "block lg:hidden", },
+    { id: "benefits", href: "#benefits", label: t("header.nav_partnership"), className: "hidden md:block", classNameMobile: "block md:hidden", },
+    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "hidden md:block", classNameMobile: "block md:hidden", },
+    { id: "products", href: "#products", label: t("header.nav_products"), className: "hidden lg:block", classNameMobile: "block lg:hidden", },
+    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "hidden xl:block", classNameMobile: "block xl:hidden", },
   ];
 
   if (isMobile) {
     return (
         <nav className="flex flex-col space-y-4 text-lg">
-          {sideMenuLinks.map((link) => (
+          {links.map((link) => (
               <a
                   key={link.href}
                   href={link.href}
                   onClick={onLinkClick}
-                  className={`text-gray-700 hover:text-teal-600 transition-colors ${link.className}`}
+                  className={`text-gray-700 hover:text-teal-600 transition-colors ${link.classNameMobile}`}
               >
                 {link.label}
               </a>
