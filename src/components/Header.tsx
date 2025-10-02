@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,} from "@/components/ui/sheet";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
-import { Phone, Mail, Menu, UserPlus, } from "lucide-react";
-
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Phone, Mail, Menu, UserPlus } from "lucide-react";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 
 
 type headerLink = {
@@ -16,19 +16,21 @@ type headerLink = {
 }
 
 type LanguageConfig = {
-  [key: string]: { name: string; flag: string };
+  [key: string]: {
+    shortName: string;
+    fullName: string;
+  };
 };
 
 const languageConfig: LanguageConfig = {
-  ru: { name: "RU", flag: "🇷🇺" },
-  en: { name: "EN", flag: "🇬🇧" },
-  de: { name: "DE", flag: "de" },
+  ru: { shortName: "RU", fullName: "Русский" },
+  en: { shortName: "EN", fullName: "English" },
+  de: { shortName: "DE", fullName: "Deutsch" },
 };
 
 const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
-
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng).then(r => true);
   };
@@ -41,11 +43,8 @@ const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
                 variant="outline"
                 className="flex items-center gap-1.5 w-[70px] sm:w-24 justify-start px-2 sm:px-3"
             >
-            <span className="flex-shrink-0">
-              {languageConfig[currentLanguage]?.flag ?? "🌐"}
-            </span>
-              <span className="font-semibold hidden sm:inline">
-              {languageConfig[currentLanguage]?.name ?? "Lang"}
+              <span className="font-semibold">
+              🌐 {languageConfig[currentLanguage]?.shortName ?? 'Lang'}
             </span>
             </Button>
           </DropdownMenuTrigger>
@@ -56,8 +55,7 @@ const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
                     onSelect={() => changeLanguage(lng)}
                     className="cursor-pointer"
                 >
-                  <span className="mr-3">{languageConfig[lng].flag}</span>
-                  <span>{languageConfig[lng].name}</span>
+                  <span>{languageConfig[lng].fullName}</span>
                 </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -76,7 +74,6 @@ const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLin
     { id: "products", href: "#products", label: t("header.nav_products"), className: "hidden lg:block", classNameMobile: "block lg:hidden", },
     { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "hidden xl:block", classNameMobile: "block xl:hidden", },
   ];
-
   if (isMobile) {
     return (
         <nav className="flex flex-col space-y-4 text-lg">
@@ -93,7 +90,6 @@ const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLin
         </nav>
     );
   }
-
   return (
       <nav className="flex items-center space-x-6">
         {links.map((link) => (
@@ -143,12 +139,12 @@ const CtaButton = () => {
 const Header = () => {
   const { t } = useTranslation();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const scrollDirection = useScrollDirection();
 
   const handleLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
-  // Items to be displayed in the side menu
   const mobileNavItems = (
       <>
         <NavLinks isMobile onLinkClick={handleLinkClick} />
@@ -162,7 +158,10 @@ const Header = () => {
   );
 
   return (
-      <header className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+      <header
+          className={`bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 transition-transform duration-300 ${
+              scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+          }`}>
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center content-center justify-between gap-4">
             <a href="/" className="flex items-center space-x-3 shrink-0">
@@ -178,7 +177,6 @@ const Header = () => {
                 </p>
               </div>
             </a>
-
             <div className="flex items-end xl:items-center justify-center sm:flex-grow min-w-0">
               <div className="hidden sm:flex items-center justify-center gap-x-4 md:gap-x-6">
                 <NavLinks />
@@ -188,8 +186,6 @@ const Header = () => {
               <div className="ml-4 flex-shrink-0">
                 <CtaButton />
               </div>
-
-              {/* The burger menu appears when at least one item is hidden (except the CTA) */}
               <div className="ml-2 2xl:hidden">
                 <Sheet
                     open={isMobileMenuOpen}
