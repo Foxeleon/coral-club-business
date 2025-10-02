@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, } from "@/components/ui/sheet";
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,} from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import { Phone, Mail, Menu, UserPlus, } from "lucide-react";
 
-// --- КОНФИГУРАЦИЯ ---
+
 type LanguageConfig = {
   [key: string]: { name: string; flag: string };
 };
@@ -13,23 +13,16 @@ type LanguageConfig = {
 const languageConfig: LanguageConfig = {
   ru: { name: "RU", flag: "🇷🇺" },
   en: { name: "EN", flag: "🇬🇧" },
+  de: { name: "DE", flag: "de" },
 };
 
-// Приоритет элементов для скрытия. ПОРЯДОК ВАЖЕН!
-// Элементы в начале массива будут скрываться первыми.
-const priorityOrder = [
-  "language",
-  "contacts",
-  "products",
-  "about",
-  "partnership",
-  "testimonials",
-  "phone-email",
-];
+type headerLink = {
+  id: string;
+  href: string;
+  label: string;
+  className: string;
+}
 
-// --- КОМПОНЕНТЫ ХЕДЕРА ---
-
-// -- Переключатель языка --
 const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -71,34 +64,34 @@ const LanguageSwitcher = ({ className = "" }: { className?: string }) => {
   );
 };
 
-// -- Навигационные ссылки --
 const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLinkClick?: () => void; }) => {
   const { t } = useTranslation();
-  const links = [
-    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "hidden lg:block", },
-    { id: "partnership", href: "#benefits", label: t("header.nav_partnership"), className: "hidden lg:block", },
-    { id: "about", href: "#about", label: t("header.nav_about"), className: "hidden md:block", },
-    { id: "products", href: "#products", label: t("header.nav_products"), className: "hidden md:block", },
-    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "hidden sm:block", },
+
+  const links: Array<headerLink> = [
+    { id: "about", href: "#about", label: t("header.nav_about"), className: "hidden lg:block", },
+    { id: "benefits", href: "#benefits", label: t("header.nav_partnership"), className: "hidden md:block", },
+    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "hidden md:block", },
+    { id: "products", href: "#products", label: t("header.nav_products"), className: "hidden lg:block", },
+    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "hidden xl:block", },
   ];
 
-  const allLinks = [
-    { href: "#testimonials", label: t("header.nav_testimonials") },
-    { href: "#benefits", label: t("header.nav_partnership") },
-    { href: "#about", label: t("header.nav_about") },
-    { href: "#products", label: t("header.nav_products") },
-    { href: "#contacts", label: t("header.nav_contacts") },
+  const sideMenuLinks: Array<headerLink> = [
+    { id: "about", href: "#about", label: t("header.nav_about"), className: "block lg:hidden", },
+    { id: "benefits", href: "#benefits", label: t("header.nav_partnership"), className: "block md:hidden", },
+    { id: "testimonials", href: "#testimonials", label: t("header.nav_testimonials"), className: "block md:hidden", },
+    { id: "products", href: "#products", label: t("header.nav_products"), className: "block lg:hidden", },
+    { id: "contacts", href: "#contacts", label: t("header.nav_contacts"), className: "block xl:hidden", },
   ];
 
   if (isMobile) {
     return (
         <nav className="flex flex-col space-y-4 text-lg">
-          {allLinks.map((link) => (
+          {sideMenuLinks.map((link) => (
               <a
                   key={link.href}
                   href={link.href}
                   onClick={onLinkClick}
-                  className="text-gray-700 hover:text-teal-600 transition-colors"
+                  className={`text-gray-700 hover:text-teal-600 transition-colors ${link.className}`}
               >
                 {link.label}
               </a>
@@ -110,7 +103,7 @@ const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLin
   return (
       <nav className="flex items-center space-x-6">
         {links.map((link) => (
-            <a key={link.id} href={link.href} className={`text-gray-700 hover:text-teal-600 transition-colors ${link.className}`}>
+            <a key={link.id} href={link.href} className={`text-gray-700 hover:text-teal-600 transition-colors text-base md:text-sm lg:text-md xl:text-lg ${link.className}`}>
               {link.label}
             </a>
         ))}
@@ -118,10 +111,9 @@ const NavLinks = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLin
   );
 };
 
-// -- Контакты --
 const ContactInfo = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; onLinkClick?: () => void; }) => (
     <div
-        className={ isMobile ? "space-y-3 text-sm" : "hidden xl:flex flex-col items-start text-xs" }
+        className={ isMobile ? "space-y-3 text-sm" : "hidden sm:flex flex-col items-start text-xs" }
     >
       <a href="mailto:info.coralworld@gmail.com" target="_blank" onClick={onLinkClick} className="flex items-center space-x-2 text-gray-600 hover:text-teal-600">
         <Mail className="w-4 h-4" />
@@ -134,30 +126,26 @@ const ContactInfo = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; on
     </div>
 );
 
-// -- Кнопка CTA --
 const CtaButton = () => {
   const { t } = useTranslation();
   return (
-      <>
-        {/* Кнопка для больших экранов */}
+      <div>
         <a
             href="#contacts"
             className={`${buttonVariants({ size: "default", })} bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white hidden sm:inline-flex`}
         >
           {t("header.cta_button")}
         </a>
-        {/* Кнопка-иконка для мобильных */}
         <a
             href="#contacts"
             className={`${buttonVariants({ size: "icon", })} bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white sm:hidden`}
         >
           <UserPlus className="h-5 w-5" />
         </a>
-      </>
+      </div>
   );
 };
 
-// --- ОСНОВНОЙ КОМПОНЕНТ HEADER ---
 const Header = () => {
   const { t } = useTranslation();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -166,12 +154,15 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  // Элементы, которые будут отображаться в боковом меню
+  // Items to be displayed in the side menu
   const mobileNavItems = (
       <>
         <NavLinks isMobile onLinkClick={handleLinkClick} />
         <div className="mt-8 border-t pt-6">
           <ContactInfo isMobile onLinkClick={handleLinkClick} />
+        </div>
+        <div className="mt-8 border-t pt-6">
+          <LanguageSwitcher />
         </div>
       </>
   );
@@ -180,13 +171,12 @@ const Header = () => {
       <header className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center content-center justify-between gap-4">
-            {/* Лого */}
             <a href="/" className="flex items-center space-x-3 shrink-0">
               <div className="w-14 h-14 bg-gradient-to-br from-white to-cyan-200 rounded-lg flex items-center justify-center flex-shrink-0">
                 <img src="/coral_world.svg" alt="Coral Club Logo" className="w-full h-full object-contain p-1" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-base md:text-lg lg:text-xl font-bold text-gray-800">
+                <h1 className="text-base md:text-sm lg:text-md xl:text-xl font-bold text-gray-800">
                   CORAL CLUB BUSINESS
                 </h1>
                 <p className="text-[10px] md:text-xs text-gray-600">
@@ -195,7 +185,7 @@ const Header = () => {
               </div>
             </a>
 
-            <div className="flex items-center justify-center flex-grow min-w-0">
+            <div className="flex items-end xl:items-center justify-center sm:flex-grow min-w-0">
               <div className="hidden sm:flex items-center justify-center gap-x-4 md:gap-x-6">
                 <NavLinks />
                 <ContactInfo />
@@ -205,7 +195,7 @@ const Header = () => {
                 <CtaButton />
               </div>
 
-              {/* Бургер-меню появляется, когда скрыт хотя бы один элемент (кроме CTA) */}
+              {/* The burger menu appears when at least one item is hidden (except the CTA) */}
               <div className="ml-2 2xl:hidden">
                 <Sheet
                     open={isMobileMenuOpen}
@@ -216,7 +206,7 @@ const Header = () => {
                       <Menu className="h-6 w-6" />
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] sm:w-[350px]">
+                  <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                     <SheetHeader className="border-b pb-4 mb-4">
                       <SheetTitle>
                         <a href="/" onClick={handleLinkClick} className="flex items-center space-x-2">
@@ -225,12 +215,14 @@ const Header = () => {
                           </div>
                           <div>
                             <h2 className="text-lg font-bold text-gray-800">
-                              CORAL CLUB
+                              CORAL CLUB BUSINESS
                             </h2>
-                            <p className="text-xs text-gray-600">BUSINESS</p>
                           </div>
                         </a>
                       </SheetTitle>
+                      <SheetDescription className="sr-only">
+                        {t("header.philosophy")}
+                      </SheetDescription>
                     </SheetHeader>
                     {mobileNavItems}
                   </SheetContent>
