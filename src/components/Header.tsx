@@ -192,7 +192,7 @@ const Header = () => {
                     onOpenChange={setMobileMenuOpen}
                 >
                   <SheetTrigger asChild>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" aria-label={t("header.open_menu")}>
                       <Menu className="h-6 w-6" />
                     </Button>
                   </SheetTrigger>
