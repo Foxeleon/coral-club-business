@@ -5,7 +5,9 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './src/App';
 import { StaticRouter } from 'react-router-dom/server';
-import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
+import ReactHelmet from 'react-helmet-async';
+const { HelmetProvider } = ReactHelmet;
+type HelmetServerState = ReactHelmet.HelmetServerState;
 import { I18nextProvider } from 'react-i18next';
 import i18n from './src/i18n';
 
@@ -50,7 +52,6 @@ async function runPrerender() {
         );
 
         const { helmet } = helmetContext;
-
         const helmetStrings = `
             ${helmet?.title?.toString() || ''}
             ${helmet?.meta?.toString() || ''}
