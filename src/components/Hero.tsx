@@ -41,9 +41,6 @@ const Hero = () => {
                 <a href="#contacts">{t('hero.cta_button_1')}</a>
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-teal-600 hover:bg-gray-100 hover:text-teal-600 px-8 py-4 text-lg">
-                <a href="https://coralworld.eu/" target="_blank">{t('hero.cta_button_2')}</a>
-              </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
