@@ -1,4 +1,10 @@
 {
+  "meta": {
+    "title": "Coral Club Business",
+    "description": "Eine Philosophie des gesunden Lebens. Erfahren Sie mehr über die Möglichkeiten zum Aufbau eines internationalen Geschäfts.",
+    "og_title": "Coral Club Business",
+    "og_description": "Eine Philosophie des gesunden Lebens. Erfahren Sie mehr über die Möglichkeiten zum Aufbau eines internationalen Geschäfts."
+  },
   "header": {
     "philosophy": "Philosophie eines gesunden Lebens",
     "nav_about": "Über uns",
