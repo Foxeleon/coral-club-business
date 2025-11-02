@@ -1,27 +1,29 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from './src/App';
+import { StaticRouter } from 'react-router-dom/server';
+import { I18nextProvider } from 'react-i18next';
 import i18n from './src/i18n';
+import type { HelmetServerState } from 'react-helmet-async';
 
 const languages = ['ru', 'en', 'de'];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function runPrerender() {
-    console.log('Starting FINAL pre-rendering process...');
+    console.log('Starting a working pre-rendering process...');
+
+    const helmetAsync = await import('react-helmet-async');
+    const { HelmetProvider } = helmetAsync;
 
     const templatePath = path.resolve(__dirname, 'dist/index.html');
     if (!fs.existsSync(templatePath)) {
-        console.error("PANIC: dist/index.html not found. Check build:client script.");
+        console.error("PANIC: dist/index.html not found.");
         return;
     }
     const template = fs.readFileSync(templatePath, 'utf-8');
-
-    const serverEntryPath = path.resolve(__dirname, 'dist/server/entry-server.js');
-    if (!fs.existsSync(serverEntryPath)) {
-        console.error("PANIC: dist/server/entry-server.js not found. Check build:server script.");
-        return;
-    }
-    const { render } = await import(serverEntryPath);
 
     for (const lng of languages) {
         console.log(`Rendering language: ${lng}`);
@@ -36,12 +38,26 @@ async function runPrerender() {
             fallbackLng: lng,
         });
 
-        const { html: appHtml, helmet } = render('/', i18n);
+        const helmetContext: { helmet?: HelmetServerState } = {};
+
+        const appHtml = renderToString(
+            <React.StrictMode>
+                <StaticRouter location="/">
+                    <HelmetProvider context={helmetContext}>
+                        <I18nextProvider i18n={i18n}>
+                            <App />
+                        </I18nextProvider>
+                    </HelmetProvider>
+                </StaticRouter>
+            </React.StrictMode>
+        );
+
+        const { helmet: helmetResult } = helmetContext;
 
         const helmetStrings = `
-            ${helmet.title.toString()}
-            ${helmet.meta.toString()}
-            ${helmet.link.toString()}
+            ${helmetResult?.title?.toString() || ''}
+            ${helmetResult?.meta?.toString() || ''}
+            ${helmetResult?.link?.toString() || ''}
         `;
 
         const finalHtml = template
@@ -57,16 +73,15 @@ async function runPrerender() {
     }
 
     const rootIndexPath = path.resolve(__dirname, 'dist/index.html');
-    const redirectScript = `
+    fs.writeFileSync(rootIndexPath, `
     <script>
       const userLang = navigator.language.split('-')[0];
       const supportedLangs = ['ru', 'en', 'de'];
       const langToRedirect = supportedLangs.includes(userLang) ? userLang : 'ru';
       window.location.replace('/' + langToRedirect + '/');
     </script>
-    `;
-    fs.writeFileSync(rootIndexPath, redirectScript);
-    console.log('Created root redirect file in dist/index.html.');
+    `);
+    console.log('Created root redirect file.');
     console.log('\nSSG process completed successfully!');
 }
 
