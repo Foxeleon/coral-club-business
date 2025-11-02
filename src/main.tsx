@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { getLanguageFromPath } from './utils/language-helper';
 import './index.css';
 import './i18n';
+import { HelmetProvider } from "react-helmet-async";
 
 const language = getLanguageFromPath(window.location.pathname);
 const basename = language ? `/${language}` : '/';
@@ -13,9 +14,11 @@ const rootElement = document.getElementById('root') as HTMLElement;
 
 const app = (
     <React.StrictMode>
-        <BrowserRouter basename={basename}>
-            <App />
-        </BrowserRouter>
+        <HelmetProvider>
+            <BrowserRouter basename={basename}>
+                <App />
+            </BrowserRouter>
+        </HelmetProvider>
     </React.StrictMode>
 );
 
