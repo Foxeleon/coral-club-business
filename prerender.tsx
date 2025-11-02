@@ -10,6 +10,7 @@ import i18n from './src/i18n';
 import type { HelmetServerState } from 'react-helmet-async';
 
 const languages = ['ru', 'en', 'de'];
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function runPrerender() {
