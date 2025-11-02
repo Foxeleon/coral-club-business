@@ -7,11 +7,11 @@ const languages = ['ru', 'en', 'de'];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function runPrerender() {
-    console.log('Starting BULLETPROOF pre-rendering process...');
+    console.log('Starting FINAL pre-rendering process...');
 
-    const templatePath = path.resolve(__dirname, 'dist/client/index.html');
+    const templatePath = path.resolve(__dirname, 'dist/index.html');
     if (!fs.existsSync(templatePath)) {
-        console.error("PANIC: dist/client/index.html not found. Check build:client script.");
+        console.error("PANIC: dist/index.html not found. Check build:client script.");
         return;
     }
     const template = fs.readFileSync(templatePath, 'utf-8');
@@ -48,15 +48,15 @@ async function runPrerender() {
             .replace(`<!--app-html-->`, appHtml)
             .replace('</head>', `${helmetStrings}</head>`);
 
-        const dirPath = path.resolve(__dirname, `dist/client/${lng}`);
+        const dirPath = path.resolve(__dirname, `dist/${lng}`);
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
         }
         fs.writeFileSync(`${dirPath}/index.html`, finalHtml);
-        console.log(`Successfully pre-rendered: dist/client/${lng}/index.html`);
+        console.log(`Successfully pre-rendered: dist/${lng}/index.html`);
     }
 
-    const rootIndexPath = path.resolve(__dirname, 'dist/client/index.html');
+    const rootIndexPath = path.resolve(__dirname, 'dist/index.html');
     const redirectScript = `
     <script>
       const userLang = navigator.language.split('-')[0];
@@ -66,7 +66,7 @@ async function runPrerender() {
     </script>
     `;
     fs.writeFileSync(rootIndexPath, redirectScript);
-    console.log('Created root redirect file.');
+    console.log('Created root redirect file in dist/index.html.');
     console.log('\nSSG process completed successfully!');
 }
 
