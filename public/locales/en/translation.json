@@ -1,4 +1,10 @@
 {
+  "meta": {
+    "title": "Coral Club Business",
+    "description": "A philosophy of healthy living. Learn about opportunities to build an international business.",
+    "og_title": "Coral Club Business",
+    "og_description": "A philosophy of healthy living. Learn about opportunities to build an international business."
+  },
   "header": {
     "philosophy": "Philosophy of a healthy life",
     "nav_about": "About",
