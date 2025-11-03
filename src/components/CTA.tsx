@@ -203,7 +203,7 @@ const CTA = () => {
                   <div className="space-y-3 text-sm text-gray-600">
                     <div className="flex items-center space-x-2">
                       <Phone className="w-4 h-4 text-teal-500" />
-                      <span><a href="tel:+4917679292954">+49 176 792 929 54</a></span>
+                      <span><a href="tel:+4915560591305">+49 155 605 913 05</a></span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Mail className="w-4 h-4 text-teal-500" />

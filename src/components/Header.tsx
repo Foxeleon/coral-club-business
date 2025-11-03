@@ -109,9 +109,9 @@ const ContactInfo = ({ isMobile = false, onLinkClick }: { isMobile?: boolean; on
         <Mail className="w-4 h-4" />
         <span>info.coralworld@gmail.com</span>
       </a>
-      <a href="tel:+4917679292954" onClick={onLinkClick} className="flex items-center space-x-2 text-gray-600 hover:text-teal-600">
+      <a href="tel:+4915560591305" onClick={onLinkClick} className="flex items-center space-x-2 text-gray-600 hover:text-teal-600">
         <Phone className="w-4 h-4" />
-        <span>+49 176 792 929 54</span>
+        <span>+49 155 605 913 05</span>
       </a>
     </div>
 );

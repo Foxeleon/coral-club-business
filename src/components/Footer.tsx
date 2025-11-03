@@ -36,7 +36,7 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-semibold mb-4">{t('footer.contacts_title')}</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="tel:+4917679292954">+49 176 792 929 54</a></li>
+                <li><a href="tel:+4915560591305">+49 155 605 913 05</a></li>
                 <li><a href="mailto:info.coralworld@gmail.com" target="_blank">info.coralworld@gmail.com</a></li>
                 <li>Telegram: <a href='https://t.me/+4917679292954' target="_blank">@CoralWorldInfo</a></li>
                 <li><a href="https://wa.me/+4917679292954" target="_blank">WhatsApp</a></li>
