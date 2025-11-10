@@ -1,81 +1,91 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Phone, Mail, MapPin, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowRight, Loader2, CheckCircle, AlertCircle, Phone, Mail, MapPin } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 const CTA = () => {
-  const { t } = useTranslation();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
-  const [status, setStatus] = useState<{
-    isSubmitting: boolean;
-    type: 'idle' | 'success' | 'error';
-    message: string;
-  }>({
-    isSubmitting: false,
-    type: 'idle',
-    message: ''
-  });
+    const { t } = useTranslation();
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+    });
+    const [status, setStatus] = useState<{
+        isSubmitting: boolean;
+        type: 'idle' | 'success' | 'error';
+        message: string;
+    }>({
+        isSubmitting: false,
+        type: 'idle',
+        message: ''
+    });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    const gtag_report_conversion = () => {
+        if (window.gtag) {
+            window.gtag('event', 'conversion', {
+                'send_to': 'AW-11293487612/gt2WCLW7y70bEPzjk4kq',
+                'transaction_id': '',
+                'event_callback': () => {
+                    console.log("Conversion event sent successfully.");
+                }
+            });
+        } else {
+            console.warn("gtag function not found on window object.");
+        }
+    };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
-    if (!formData.name || !formData.email || !formData.phone) {
-      setStatus({ isSubmitting: false, type: 'error', message: t('cta.status_fill_fields') });
-      return;
-    }
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!formData.name || !formData.email || !formData.phone) {
+            setStatus({ isSubmitting: false, type: 'error', message: t('cta.status_fill_fields') });
+            return;
+        }
+        setStatus({ isSubmitting: true, type: 'idle', message: '' });
+        try {
+            const requestBody = {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                message: formData.message || ' ',
+            };
+            const apiUrl = import.meta.env.VITE_PUBLIC_API_URL;
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(requestBody)
+            });
 
-    setStatus({ isSubmitting: true, type: 'idle', message: '' });
+            const result = await response.json();
 
-    try {
-      const requestBody = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message || ' ',
-      };
+            if (!response.ok) {
+                throw new Error(result.message || `${t('cta.status_error_prefix')}: ${response.status}`);
+            }
 
-      const apiUrl = import.meta.env.VITE_PUBLIC_API_URL;
+            gtag_report_conversion();
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(requestBody)
-      });
+            setStatus({ isSubmitting: false, type: 'success', message: t('cta.status_success') });
+            setFormData({ name: '', email: '', phone: '', message: '' });
+            setTimeout(() => setStatus({ isSubmitting: false, type: 'idle', message: '' }), 5000);
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || `${t('cta.status_error_prefix')}: ${response.status}`);
-      }
-
-      setStatus({ isSubmitting: false, type: 'success', message: t('cta.status_success') });
-      setFormData({ name: '', email: '', phone: '', message: '' });
-
-      setTimeout(() => setStatus({ isSubmitting: false, type: 'idle', message: '' }), 5000);
-
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : t('cta.status_unknown_error');
-      setStatus({ isSubmitting: false, type: 'error', message: errorMessage });
-    }
-  };
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : t('cta.status_unknown_error');
+            setStatus({ isSubmitting: false, type: 'error', message: errorMessage });
+        }
+    };
 
   return (
       <section id="contacts" className="py-20 bg-gradient-to-br from-teal-500 via-cyan-400 to-emerald-500 relative overflow-hidden">
